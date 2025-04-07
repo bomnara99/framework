@@ -24,7 +24,7 @@ public class LoginController {
 	
 	/**
 	 * 로그인 화면
-	 * 
+	 *  
 	 * @param request
 	 * @param model
 	 * @return
