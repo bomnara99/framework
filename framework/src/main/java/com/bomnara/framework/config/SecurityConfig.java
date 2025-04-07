@@ -51,7 +51,7 @@ public class SecurityConfig {
 						authorizeRequest
 							.requestMatchers(PathRequest.toH2Console()).permitAll()
 							.requestMatchers( "/css/**", "/img/**", "/js/**", "/scss/**", "/vendor/**").permitAll()
-							.requestMatchers("/","/login","/loginProc","/unauthorized").permitAll()
+							.requestMatchers("/","/login","/loginProc","/register","/registerProc","/unauthorized").permitAll()
 							.requestMatchers("/api/**").hasAnyRole(Role.USER.name(),Role.ADMIN.name())							
 							.requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
 							.anyRequest().authenticated()
@@ -59,8 +59,8 @@ public class SecurityConfig {
 			.formLogin((formLogin) ->
 						formLogin
 							.loginPage("/login")
-							.usernameParameter("username")
-							.passwordParameter("password")
+							.usernameParameter("userId")
+							.passwordParameter("pwd")
 							.loginProcessingUrl("/loginProc")
 							.defaultSuccessUrl("/main",true)
 							.failureHandler(customFailureHandler)

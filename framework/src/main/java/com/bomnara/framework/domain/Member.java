@@ -11,8 +11,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member{
@@ -22,19 +24,19 @@ public class Member{
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String userId;
 
     @Column(nullable = false)
-    private String password;
+    private String pwd;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
     @Builder
-    public Member(String username, String password, Role role){
-        this.username = username;
-        this.password = password;
+    public Member(String userId, String pwd, Role role){
+        this.userId = userId;
+        this.pwd = pwd;
         this.role = role;
 
     }
