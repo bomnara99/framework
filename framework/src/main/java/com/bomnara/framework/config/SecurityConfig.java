@@ -16,7 +16,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.bomnara.framework.Exception.CustomAuthenticationFailureHandler;
 import com.bomnara.framework.domain.Role;
-import com.bomnara.framework.service.impl.LoginserviceImpl;
+import com.bomnara.framework.service.impl.LoginServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
@@ -27,9 +27,10 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class SecurityConfig {
 	
-	private final LoginserviceImpl loginservice;
+	private final LoginServiceImpl loginservice;
 	private final CustomAuthenticationFailureHandler customFailureHandler;
 
+	// 회원 가입시 패스워드 처리
 	@Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -52,7 +53,7 @@ public class SecurityConfig {
 							.requestMatchers(PathRequest.toH2Console()).permitAll()
 							.requestMatchers( "/css/**", "/img/**", "/js/**", "/scss/**", "/vendor/**","/fragment/**").permitAll()
 							.requestMatchers("/","/login","/loginProc","/register","/registerProc","/unauthorized").permitAll()
-							.requestMatchers("/api/**").hasAnyRole(Role.USER.name(),Role.ADMIN.name())							
+							.requestMatchers("/api/**","/token/**").hasAnyRole(Role.USER.name(),Role.ADMIN.name())							
 							.requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
 							.anyRequest().authenticated()
 					)

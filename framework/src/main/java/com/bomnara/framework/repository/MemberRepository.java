@@ -1,6 +1,8 @@
-package com.bomnara.framework.domain;
+package com.bomnara.framework.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.bomnara.framework.domain.Member;
 
 import java.util.Optional;
 

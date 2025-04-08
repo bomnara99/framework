@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.bomnara.framework.Exception.CustomLoginException;
 import com.bomnara.framework.domain.Member;
-import com.bomnara.framework.domain.MemberRepository;
 import com.bomnara.framework.domain.ReturnCode;
+import com.bomnara.framework.repository.MemberRepository;
 import com.bomnara.framework.service.LoginService;
 import com.bomnara.framework.util.BomUtil;
 
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service	
-public class LoginserviceImpl implements LoginService,UserDetailsService {
+public class LoginServiceImpl implements LoginService,UserDetailsService {
 	
 	private final MemberRepository memberRepository;
 	
