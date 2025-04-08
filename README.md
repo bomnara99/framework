@@ -4,4 +4,4 @@
 - jpa
 - thymeleaf
 - charisma template
-- jwt(예정)
+- jwt(적용중)
