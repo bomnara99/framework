@@ -50,7 +50,7 @@ public class SecurityConfig {
 			.authorizeRequests((authorizeRequest) ->
 						authorizeRequest
 							.requestMatchers(PathRequest.toH2Console()).permitAll()
-							.requestMatchers( "/css/**", "/img/**", "/js/**", "/scss/**", "/vendor/**").permitAll()
+							.requestMatchers( "/css/**", "/img/**", "/js/**", "/scss/**", "/vendor/**","/fragment/**").permitAll()
 							.requestMatchers("/","/login","/loginProc","/register","/registerProc","/unauthorized").permitAll()
 							.requestMatchers("/api/**").hasAnyRole(Role.USER.name(),Role.ADMIN.name())							
 							.requestMatchers("/admin/**").hasRole(Role.ADMIN.name())

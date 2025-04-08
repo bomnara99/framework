@@ -37,9 +37,7 @@ dependencies {
 	
 	//정적소스 재시작 없이 바로 변경
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	
-	implementation("org.json:json:20250107")
-	
+		
 	runtimeOnly 'com.h2database:h2'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
