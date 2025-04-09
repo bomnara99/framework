@@ -54,7 +54,7 @@ public class LoginController {
 	    if (error != null) {
 	        model.addAttribute("errorMsg", error.toString());
 	        request.getSession().removeAttribute("errorMsg"); // 한 번만 보여주고 제거
-	    }	    
+	    }
 		return "t_login.html";
 		
 	}

@@ -19,6 +19,9 @@ import com.bomnara.framework.domain.Role;
 import com.bomnara.framework.service.impl.LoginServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +32,22 @@ public class SecurityConfig {
 	
 	private final LoginServiceImpl loginservice;
 	private final CustomAuthenticationFailureHandler customFailureHandler;
+	
+	//http://localhost:8080/swagger-ui/index.html
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .components(new Components())
+                .info(info());
+    }
 
+    private Info info() {
+        return new Info()
+                .title("BOMNARA API")
+                .description("BOMNARA API reference for developers")
+                .version("1.0");
+    }
+	
 	// 회원 가입시 패스워드 처리
 	@Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -53,7 +71,8 @@ public class SecurityConfig {
 							.requestMatchers(PathRequest.toH2Console()).permitAll()
 							.requestMatchers( "/css/**", "/img/**", "/js/**", "/scss/**", "/vendor/**","/fragment/**").permitAll()
 							.requestMatchers("/","/login","/loginProc","/register","/registerProc","/unauthorized").permitAll()
-							.requestMatchers("/api/**","/token/**").hasAnyRole(Role.USER.name(),Role.ADMIN.name())							
+							.requestMatchers("/swagger-ui/**").hasAnyRole(Role.USER.name(),Role.ADMIN.name())
+							.requestMatchers("/api/token**").hasAnyRole(Role.USER.name(),Role.ADMIN.name())							
 							.requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
 							.anyRequest().authenticated()
 					)

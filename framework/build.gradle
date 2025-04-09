@@ -38,6 +38,9 @@ dependencies {
 	//정적소스 재시작 없이 바로 변경
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+	
 	//JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'

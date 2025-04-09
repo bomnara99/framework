@@ -17,7 +17,7 @@ public class MainController {
 	
 
 	/**
-	 * 메인 화면
+	 * 메인 화면 - token 
 	 * 
 	 * @param model
 	 * @return
@@ -30,5 +30,18 @@ public class MainController {
 		return "t_main.html";
 	}
 	
+	/**
+	 * swagger 화면
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/swagger")
+	public String swagger(Model model,Authentication authentication) {
+
+		model.addAttribute("userId", authentication.getName()); 
+		
+		return "t_swagger.html";
+	}
 	
 }
