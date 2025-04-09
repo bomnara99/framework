@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 
 public interface TokenService {
 	
-	HashMap<String,Object> generateToken(Authentication authentication); 
-	
+	HashMap<String,Object> getGenerateToken(Authentication authentication); 
+	HashMap<String,Object> getTokenList(Authentication authentication);
 	
 }

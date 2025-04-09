@@ -3,16 +3,78 @@
 	layout:decorate="~{fragment/layout_Navi}" layout:fragment="Content">
 <head>
 	<title>BOMNARA - Main</title>
+	<style type="text/css">
+		#dataTable {
+		  table-layout: fixed;
+		}
+	</style>
 	<script type="text/javascript">
+	
+	//토큰 생성
 	function fnGenerateToken(){
-		
 		$.ajax({
-		    url: '/token/generateToken',
+		    url: '/api/token/getGenerateToken',
 		    method: 'post',		    
 		    dataType : 'json',
 		    success: function (data, status, xhr) {		        
 		        console.info(data);
 		        $("#pToken").html(data.token);
+		        fnGetTokenList();
+		    },
+		    error: function (data, status, err) {
+		    	if(data.status==401){
+		    		alert("권한이 없습니다. 로그인페이지로 이동합니다.");
+		    		location.href='/login';
+		    	}
+// 		    	alert("[status:"+status);
+		    },
+		    complete: function () {
+		        
+		    }
+		});
+		
+	}
+	var temp;
+	//토큰 리스트 조회
+	function fnGetTokenList(){
+		
+		$.ajax({
+		    url: '/api/token/getTokenList',
+		    method: 'post',		    
+		    dataType : 'json',
+		    success: function (data, status, xhr) {
+		    	temp = data;
+		        var setData = []; // 배열 하나 만들어 주기!
+		        data.token.content.forEach(function(item){
+		        	var tableData = {
+		                data1 : item.id,
+		                data2 : item.token,
+		                data3 : item.createDate,
+		                data4 : item.expiredDate
+		            }
+		            setData.unshift(tableData); // 만들어진 배열에 tableData push하기.
+		        });
+		        $('#dataTable').DataTable({
+		        		data : setData,
+		                columns : [
+		                    { data : 'data1' },
+		                    { data : 'data2' },
+		                    { data : 'data3' },
+		                    { data : 'data4' }
+		                ], 
+		                columnDefs: [
+		                		{ width: '10px', targets: 0 }
+		                		,{ width: '350px', targets: 1 }
+		                		,{ width: '100px', targets: 2 }
+		                		,{ width: '100px', targets: 3 }
+		                		],
+		                order:[0,'desc'],
+		                fixedColumns: true,
+		                autoWidth: false,
+		                searching: false,
+		                destroy: true,
+		        		paging: false
+		        });
 		    },
 		    error: function (data, status, err) {
 		    },
@@ -22,6 +84,9 @@
 		});
 		
 	}
+	$(document).ready(function(){
+		fnGetTokenList();
+	});
 	</script>
 </head>
 	
@@ -60,36 +125,16 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="dataTable" width="90%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>IDX</th>
+                                <th>TOKEN</th>
+                                <th>CRE_DTIME</th>
+                                <th>EXPIRED_DTIME</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                            </tr>                           
+                        <tbody id="tbody">                                                       
                         </tbody>
                     </table>
                 </div>
@@ -104,7 +149,7 @@
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+<!--     <script src="js/demo/datatables-demo.js"></script> -->
 	    
 	    
 	

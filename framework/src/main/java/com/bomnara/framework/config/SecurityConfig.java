@@ -78,11 +78,29 @@ public class SecurityConfig {
 		
 	}
 	
+	/**
+	 * 401 처리
+	 */
 	private final AuthenticationEntryPoint unauthorizedEntryPoint =
             (request, response, authException) -> {		                
-            	response.sendRedirect("/unauthorized");
+            	// page 와 api 분기 해서 처리
+            	if(request.getRequestURI().indexOf("/api")>-1){
+            		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    String json = new ObjectMapper().writeValueAsString(HttpStatus.UNAUTHORIZED);
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    PrintWriter writer = response.getWriter();
+                    writer.write(json);
+                    writer.flush();
+            	}else {
+            		response.sendRedirect("/unauthorized");
+            	}
+            	
             };
-
+            
+           
+    /**
+     * 403처리
+     */
     private final AccessDeniedHandler accessDeniedHandler =
             (request, response, accessDeniedException) -> {		                
                 response.setStatus(HttpStatus.FORBIDDEN.value());

@@ -35,7 +35,7 @@ public class LoginController {
 	 */
 	@RequestMapping("/")
 	public String home() {
-	    return "t_index.html"; // Thymeleaf나 JSP 등 뷰 이름
+	    return "t_index.html";
 	}
 	
 	/**
@@ -89,22 +89,6 @@ public class LoginController {
 		
 		return returnData;
 	}
-	
-	
-	/**
-	 * 메인
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping("/main")
-	public String main(Model model,Authentication authentication) {
-
-		model.addAttribute("userId", authentication.getName()); 
-		
-		return "t_main.html";
-	}
-	
 	
 	/**
 	 * 권한 없음 화면

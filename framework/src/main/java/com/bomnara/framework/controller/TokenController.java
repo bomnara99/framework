@@ -18,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @Controller
-@RequestMapping("/token")
+@RequestMapping("/api/token")
 public class TokenController {
 	
 	@Autowired
@@ -31,13 +31,29 @@ public class TokenController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/generateToken",method=RequestMethod.POST)
-	public HashMap<String,Object> registerProc(Authentication authentication) {		
+	@RequestMapping(value="/getGenerateToken",method=RequestMethod.POST)
+	public HashMap<String,Object> getGenerateToken(Authentication authentication) {		
 		log.info("register proc 시작");
-		HashMap<String,Object> returnData = tokenService.generateToken(authentication);
+		HashMap<String,Object> returnData = tokenService.getGenerateToken(authentication);
 		
 		
 		return returnData;
 	}
 	
+	
+	/**
+	 * TOKEN 리스트 조회
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getTokenList",method=RequestMethod.POST)
+	public HashMap<String,Object> getTokenList(Authentication authentication) {		
+		log.info("register proc 시작");
+		HashMap<String,Object> returnData = tokenService.getTokenList(authentication);
+		
+		
+		return returnData;
+	}
 }
