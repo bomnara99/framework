@@ -3,7 +3,6 @@ package com.bomnara.framework.controller;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,7 @@ import com.bomnara.framework.domain.Member;
 import com.bomnara.framework.domain.Role;
 import com.bomnara.framework.service.LoginService;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 
@@ -78,6 +78,7 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
+	@Hidden
 	@ResponseBody
 	@RequestMapping(value="/registerProc",method=RequestMethod.POST)
 	public HashMap<String,Object> registerProc(@RequestParam(value="userId",required=true) String userId

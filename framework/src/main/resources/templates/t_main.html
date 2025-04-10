@@ -17,7 +17,6 @@
 		    method: 'post',		    
 		    dataType : 'json',
 		    success: function (data, status, xhr) {		        
-		        console.info(data);
 		        $("#pToken").html(data.token);
 		        fnGetTokenList();
 		    },
@@ -36,16 +35,19 @@
 	}
 	var temp;
 	//토큰 리스트 조회
-	function fnGetTokenList(){
-		
+	function fnGetTokenList(){		
 		$.ajax({
 		    url: '/api/token/getTokenList',
-		    method: 'post',		    
+		    method: 'post',
+		    data:{"pageNo":1,"pageSize":10},
 		    dataType : 'json',
 		    success: function (data, status, xhr) {
 		    	temp = data;
-		        var setData = []; // 배열 하나 만들어 주기!
-		        data.token.content.forEach(function(item){
+		    	if(data.content.length==0){
+		    		return;
+		    	}
+		        var setData = []; // 배열 하나 만들어 주기!		        
+		        data.content.forEach(function(item){
 		        	var tableData = {
 		                data1 : item.id,
 		                data2 : item.token,
