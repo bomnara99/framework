@@ -4,6 +4,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +18,9 @@ import com.bomnara.framework.domain.Token;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
+
 @Component
+@Log4j2
 public class TokenUtil {
 	
 	@Value("${jwt.secretKey}")
@@ -30,7 +36,7 @@ public class TokenUtil {
 		
 		Date now = new Date();
 	    Date accessExpiration = new Date(now.getTime() + EXPIRATION_TIME);
-			    
+
 		String jwtTokenStr = Jwts.builder()
 	            .subject(authentication.getName())
 	            .claim("auth", authorities)
@@ -45,6 +51,31 @@ public class TokenUtil {
 		jwtToken.setExpiredDate(accessExpiration);
 		
 		return jwtToken;
+	}
+
+	public String tokenCheck(String token){
+		String chkStr="정상 입니다.";
+		try {
+			Jwts.parser()
+					.verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
+					.build()
+					.parseSignedClaims(token);
+
+		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+			log.info("Invalid JWT Token", e);
+			return "Invalid JWT Token";
+		} catch (ExpiredJwtException e) {
+			log.info("Expired JWT Token", e);
+			return "Expired JWT Token";
+		} catch (UnsupportedJwtException e) {
+			log.info("Unsupported JWT Token", e);
+			return "Unsupported JWT Token";
+		} catch (IllegalArgumentException e) {
+			log.info("JWT claims string is empty.", e);
+			return "JWT claims string is empty.";
+		}
+		return chkStr;
+
 	}
 
 }

@@ -49,6 +49,20 @@ public class TokenServiceImpl implements TokenService{
 		return pageToken;
 		
 	}
+
+	/**
+	 * 토큰 체크
+	 */
+	public String getTokenCheck(String token){
+		String msg ="";
+
+
+		msg = tokenUtil.tokenCheck(token);
+
+
+		return msg;
+
+	}
 	
 	
 }

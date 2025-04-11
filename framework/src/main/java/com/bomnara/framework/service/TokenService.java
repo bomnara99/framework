@@ -11,5 +11,5 @@ public interface TokenService {
 	
 	Optional<Token> getGenerateToken(Authentication authentication); 
 	Page<Token> getTokenList(Authentication authentication, Pageable pageable);
-	
+	String getTokenCheck(String token);
 }

@@ -66,7 +66,7 @@ public class SecurityConfig {
 							frameOptionConfig ->  frameOptionConfig.disable()
 						)
 					)
-			.authorizeRequests((authorizeRequest) ->
+			.authorizeHttpRequests((authorizeRequest) ->
 						authorizeRequest
 							.requestMatchers(PathRequest.toH2Console()).permitAll()
 							.requestMatchers( "/css/**", "/img/**", "/js/**", "/scss/**", "/vendor/**","/fragment/**").permitAll()
@@ -129,12 +129,5 @@ public class SecurityConfig {
                 writer.write(json);
                 writer.flush();
             };
-	
-    @Getter
-    @RequiredArgsConstructor
-    public class ErrorResponse {
 
-        private final HttpStatus status;
-        private final String message;
-    }
 }

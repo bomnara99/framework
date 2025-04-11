@@ -59,6 +59,7 @@ public class TokenController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/getTokenList",method=RequestMethod.POST)
+	@Operation(summary = "TOKEN 리스트 조회",description = "로그인 정보의 userId를 이용하여 리스트 조회 - h2 DB")
 	public ResponseEntity<Page<Token>> getTokenList(Authentication authentication,
 																@RequestParam(name = "pageNo") int pageNo,
 																@RequestParam(name = "pageSize") int pageSize) {		
@@ -70,6 +71,24 @@ public class TokenController {
 		Page<Token> tokenList = tokenService.getTokenList(authentication,pageable);
 		
 		return ResponseEntity.ok(tokenList);
-
+		
 	}
+
+	/**
+	 * TOKEN 검증
+	 *
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getTokenCheck",method=RequestMethod.POST)
+	@Operation(summary = "TOKEN 체크",description = "생성된 토큰 체크")
+	public ResponseEntity<String> getTokenCheck(@RequestParam(name = "token") String token) {
+
+		log.info("TOKEN 체크 시작");
+		String str  = tokenService.getTokenCheck(token);
+
+		return ResponseEntity.ok(str);
+	}
+	
 }
