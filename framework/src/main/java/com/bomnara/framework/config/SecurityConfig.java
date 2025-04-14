@@ -1,7 +1,10 @@
 package com.bomnara.framework.config;
 
-import java.io.PrintWriter;
-
+import com.bomnara.framework.Exception.CustomAuthenticationFailureHandler;
+import com.bomnara.framework.domain.Role;
+import com.bomnara.framework.service.impl.LoginServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,17 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.bomnara.framework.Exception.CustomAuthenticationFailureHandler;
-import com.bomnara.framework.domain.Role;
-import com.bomnara.framework.service.impl.LoginServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.io.PrintWriter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -32,22 +27,8 @@ public class SecurityConfig {
 	
 	private final LoginServiceImpl loginservice;
 	private final CustomAuthenticationFailureHandler customFailureHandler;
-	
-	//http://localhost:8080/swagger-ui/index.html
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .components(new Components())
-                .info(info());
-    }
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private Info info() {
-        return new Info()
-                .title("BOMNARA API")
-                .description("BOMNARA API reference for developers")
-                .version("1.0");
-    }
-	
 	// 회원 가입시 패스워드 처리
 	@Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -58,9 +39,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		
 		return http
-			.csrf(
-					(csrfConfig) -> csrfConfig.disable()
-					) 
+			.csrf((csrfConfig) -> csrfConfig.disable())
 			.headers(
 					(headerConfig) -> headerConfig.frameOptions(
 							frameOptionConfig ->  frameOptionConfig.disable()
@@ -88,10 +67,14 @@ public class SecurityConfig {
 //			.logout((logoutConfig) ->
 //						logoutConfig.logoutSuccessUrl("/")
 //					)
-			.userDetailsService(loginservice)
+
+				.userDetailsService(loginservice)
+			// 401 403 관련 예외처리
 			.exceptionHandling((exceptionConfig) ->
             	exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint).accessDeniedHandler(accessDeniedHandler)
-				) // 401 403 관련 예외처리
+				)
+			// jwt token 관련 filter 적용
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // ✅ 여기에 추가
 			.build();
 			
 		

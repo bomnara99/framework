@@ -1,22 +1,20 @@
 package com.bomnara.framework.util;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.stream.Collectors;
-
+import com.bomnara.framework.domain.Token;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.bomnara.framework.domain.Token;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 
 @Component

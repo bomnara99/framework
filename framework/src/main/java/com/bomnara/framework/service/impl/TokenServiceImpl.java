@@ -1,19 +1,17 @@
 package com.bomnara.framework.service.impl;
 
-import java.util.Optional;
-
+import com.bomnara.framework.domain.Token;
+import com.bomnara.framework.repository.TokenRepository;
+import com.bomnara.framework.service.TokenService;
+import com.bomnara.framework.util.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.bomnara.framework.domain.Token;
-import com.bomnara.framework.repository.TokenRepository;
-import com.bomnara.framework.service.TokenService;
-import com.bomnara.framework.util.TokenUtil;
-
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service	
@@ -22,14 +20,14 @@ public class TokenServiceImpl implements TokenService{
 	private final TokenRepository tokenRepository;
 	
 	@Autowired
-	private TokenUtil tokenUtil;
+	private JwtTokenProvider jwtTokenProvider;
 	
 	/**
 	 * 토큰 생성
 	 */
 	public Optional<Token> getGenerateToken(Authentication authentication){		
 		
-		Token jwtToken = tokenUtil.generateToken(authentication);
+		Token jwtToken = jwtTokenProvider.createToken(authentication);
 		
 	    tokenRepository.save(jwtToken);
 
@@ -57,7 +55,7 @@ public class TokenServiceImpl implements TokenService{
 		String msg ="";
 
 
-		msg = tokenUtil.tokenCheck(token);
+		msg = jwtTokenProvider.tokenCheck(token);
 
 
 		return msg;
